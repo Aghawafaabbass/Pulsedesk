@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Add Patient — PulseDesk{% endblock %}
+{% block nav_patients %}active{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Add Patient</h1>
+    <p>Register a new patient</p>
+  </div>
+  <a href="{% url 'patient_list' %}" class="btn-back">← Back</a>
+</div>
+
+<div class="form-card">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">First Name *</label>
+        <input type="text" name="first_name" class="fc" placeholder="John" required/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Last Name *</label>
+        <input type="text" name="last_name" class="fc" placeholder="Smith" required/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Username *</label>
+        <input type="text" name="username" class="fc" placeholder="johnsmith" required/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Password *</label>
+        <input type="password" name="password" class="fc" placeholder="••••••••" required/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Email</label>
+        <input type="email" name="email" class="fc" placeholder="john@email.com"/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Health Card Number</label>
+        <input type="text" name="health_card_number" class="fc" placeholder="ON-1234567"/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Date of Birth</label>
+        <input type="date" name="date_of_birth" class="fc"/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Blood Type</label>
+        <select name="blood_type" class="fc">
+          <option value="">Select</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Phone</label>
+        <input type="text" name="phone" class="fc" placeholder="+1 416 000 0000"/>
+      </div>
+      <div class="fg">
+        <label class="flbl">City</label>
+        <input type="text" name="city" class="fc" placeholder="Toronto"/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Province</label>
+        <input type="text" name="province" class="fc" placeholder="Ontario"/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Postal Code</label>
+        <input type="text" name="postal_code" class="fc" placeholder="M5V 3A8"/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Emergency Contact Name</label>
+        <input type="text" name="emergency_contact_name" class="fc" placeholder="Jane Smith"/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Emergency Contact Phone</label>
+        <input type="text" name="emergency_contact_phone" class="fc" placeholder="+1 416 000 0001"/>
+      </div>
+    </div>
+    <div style="display:flex;gap:.75rem;margin-top:.5rem">
+      <a href="{% url 'patient_list' %}" class="btn-back">Cancel</a>
+      <button type="submit" class="btn-save">Add Patient →</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

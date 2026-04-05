@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}{{ member.user.get_full_name }} — PulseDesk{% endblock %}
+{% block nav_staff %}active{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Dr. {{ member.user.get_full_name }}</h1>
+    <p>{{ member.specialization|default:"Staff Profile" }}</p>
+  </div>
+  <a href="{% url 'staff_list' %}" class="btn-back">← Back</a>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+  <div class="card">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem;color:var(--accent)">Staff Info</h3>
+    <table style="width:100%">
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Role</td><td><span class="badge b-{{ member.role }}">{{ member.get_role_display }}</span></td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Department</td><td style="font-size:.875rem">{{ member.department.name|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">License</td><td style="font-size:.875rem">{{ member.license_number|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Phone</td><td style="font-size:.875rem">{{ member.phone|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Email</td><td style="font-size:.875rem">{{ member.user.email|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Status</td><td>{% if member.is_available %}<span class="badge b-confirmed">Available</span>{% else %}<span class="badge b-cancelled">Unavailable</span>{% endif %}</td></tr>
+    </table>
+    {% if member.bio %}
+    <p style="margin-top:1rem;font-size:.875rem;color:var(--text2)">{{ member.bio }}</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem;color:var(--accent)">Recent Appointments</h3>
+    {% for appt in appointments %}
+    <div style="padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem">
+      <div style="display:flex;justify-content:space-between">
+        <span>{{ appt.patient.user.get_full_name }}</span>
+        <span class="badge b-{{ appt.status }}">{{ appt.get_status_display }}</span>
+      </div>
+      <div style="color:var(--muted);font-size:.78rem;margin-top:.2rem">{{ appt.appointment_date|date:"M j, Y" }}</div>
+    </div>
+    {% empty %}
+    <p style="color:var(--muted);font-size:.875rem">No appointments yet</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

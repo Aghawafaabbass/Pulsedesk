@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%230ea5e9'>✦</text></svg>"/>
+  <title>Login — PulseDesk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#07090f;--card:#131920;--surface:#0d1117;--border:#ffffff0f;--accent:#0ea5e9;--accent2:#06d6a0;--text:#e8f0fe;--muted:#4a5568;--danger:#ef4444}
+    body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+    .orb1{width:400px;height:400px;background:#0ea5e922;top:-100px;left:-100px;animation:drift 8s ease-in-out infinite}
+    .orb2{width:350px;height:350px;background:#06d6a011;bottom:-100px;right:-100px;animation:drift 8s ease-in-out infinite 3s}
+    @keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+    .wrap{position:relative;z-index:1;width:100%;max-width:420px}
+    .brand{text-align:center;margin-bottom:2rem}
+    .logo{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:18px;font-size:2rem;margin-bottom:.75rem;box-shadow:0 0 40px #0ea5e944}
+    .brand h1{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .brand p{color:var(--muted);font-size:.8rem;margin-top:.2rem}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:2.5rem;box-shadow:0 20px 60px #00000066}
+    .card h2{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.2rem}
+    .sub{color:var(--muted);font-size:.875rem;margin-bottom:1.75rem}
+    .alert{background:#ef444418;border:1px solid #ef444433;color:var(--danger);padding:.75rem 1rem;border-radius:10px;font-size:.875rem;margin-bottom:1.25rem}
+    .fg{margin-bottom:1.1rem}
+    label{display:block;font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+    input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:.8rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s}
+    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #0ea5e922}
+    input::placeholder{color:var(--muted)}
+    .btn{width:100%;padding:.875rem;background:linear-gradient(135deg,var(--accent),#38bdf8);border:none;border-radius:12px;color:#fff;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:.5rem;box-shadow:0 4px 20px #0ea5e944;transition:transform .15s}
+    .btn:hover{transform:translateY(-1px)}
+    .foot{text-align:center;margin-top:1.5rem;color:var(--muted);font-size:.75rem}
+    .foot span{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">✦</div>
+      <h1>PulseDesk</h1>
+      <p>by Agha Wafa Abbas</p>
+    </div>
+    <div class="card">
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to your workspace</p>
+      {% if form.errors %}
+        <div class="alert">Invalid username or password.</div>
+      {% endif %}
+      <form method="POST">
+        {% csrf_token %}
+        <div class="fg">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="Enter username" required autofocus/>
+        </div>
+        <div class="fg">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="••••••••" required/>
+        </div>
+        <button type="submit" class="btn">Sign In →</button>
+      </form>
+    </div>
+    <div class="foot">PulseDesk · <span>by Agha Wafa Abbas</span></div>
+  </div>
+</body>
+</html>

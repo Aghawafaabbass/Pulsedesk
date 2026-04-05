@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}Add Staff — PulseDesk{% endblock %}
+{% block nav_staff %}active{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Add Staff Member</h1>
+    <p>Register a new staff member</p>
+  </div>
+  <a href="{% url 'staff_list' %}" class="btn-back">← Back</a>
+</div>
+
+<div class="form-card">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">First Name *</label>
+        <input type="text" name="first_name" class="fc" placeholder="James" required/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Last Name *</label>
+        <input type="text" name="last_name" class="fc" placeholder="Wilson" required/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Username *</label>
+        <input type="text" name="username" class="fc" placeholder="dr.wilson" required/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Password *</label>
+        <input type="password" name="password" class="fc" placeholder="••••••••" required/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Email</label>
+        <input type="email" name="email" class="fc" placeholder="wilson@clinic.com"/>
+      </div>
+      <div class="fg">
+        <label class="flbl">Phone</label>
+        <input type="text" name="phone" class="fc" placeholder="+1 416 000 0000"/>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Role *</label>
+        <select name="role" class="fc" required>
+          <option value="doctor">Doctor</option>
+          <option value="nurse">Nurse</option>
+          <option value="receptionist">Receptionist</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="flbl">Department</label>
+        <select name="department" class="fc">
+          <option value="">No Department</option>
+          {% for dept in departments %}
+          <option value="{{ dept.id }}">{{ dept.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Specialization</label>
+        <input type="text" name="specialization" class="fc" placeholder="Cardiology"/>
+      </div>
+      <div class="fg">
+        <label class="flbl">License Number</label>
+        <input type="text" name="license_number" class="fc" placeholder="ON-MD-12345"/>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Bio</label>
+      <textarea name="bio" class="fc" placeholder="Brief professional bio..."></textarea>
+    </div>
+    <div style="display:flex;gap:.75rem;margin-top:.5rem">
+      <a href="{% url 'staff_list' %}" class="btn-back">Cancel</a>
+      <button type="submit" class="btn-save">Add Staff Member →</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

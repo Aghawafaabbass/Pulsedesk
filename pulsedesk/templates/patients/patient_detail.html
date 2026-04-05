@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}{{ patient.user.get_full_name }} — PulseDesk{% endblock %}
+{% block nav_patients %}active{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>{{ patient.user.get_full_name }}</h1>
+    <p>Patient Profile</p>
+  </div>
+  <div style="display:flex;gap:.75rem">
+    <a href="{% url 'add_medical_record' patient.id %}" class="btn-primary">+ Add Record</a>
+    <a href="{% url 'patient_list' %}" class="btn-back">← Back</a>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+  <!-- Patient Info -->
+  <div class="card">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem;color:var(--accent)">Personal Info</h3>
+    <table style="width:100%">
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Health Card</td><td style="font-size:.875rem">{{ patient.health_card_number|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Date of Birth</td><td style="font-size:.875rem">{{ patient.date_of_birth|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Phone</td><td style="font-size:.875rem">{{ patient.phone|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Blood Type</td><td style="font-size:.875rem">{{ patient.blood_type|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">City</td><td style="font-size:.875rem">{{ patient.city|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Province</td><td style="font-size:.875rem">{{ patient.province|default:"—" }}</td></tr>
+      <tr><td style="color:var(--muted);padding:.4rem 0;font-size:.85rem">Emergency</td><td style="font-size:.875rem">{{ patient.emergency_contact_name|default:"—" }} {{ patient.emergency_contact_phone }}</td></tr>
+    </table>
+  </div>
+
+  <!-- Recent Appointments -->
+  <div class="card">
+    <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem;color:var(--accent)">Recent Appointments</h3>
+    {% for appt in appointments %}
+    <div style="padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem">
+      <div style="display:flex;justify-content:space-between">
+        <span>Dr. {{ appt.doctor.user.get_full_name }}</span>
+        <span class="badge b-{{ appt.status }}">{{ appt.get_status_display }}</span>
+      </div>
+      <div style="color:var(--muted);font-size:.78rem;margin-top:.2rem">{{ appt.appointment_date|date:"M j, Y" }}</div>
+    </div>
+    {% empty %}
+    <p style="color:var(--muted);font-size:.875rem">No appointments yet</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Medical Records -->
+<div class="table-wrap">
+  <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+    <h3 style="font-family:'Syne',sans-serif">Medical Records</h3>
+    <a href="{% url 'add_medical_record' patient.id %}" class="btn-primary" style="font-size:.8rem;padding:.5rem .9rem">+ Add</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Diagnosis</th>
+        <th>Prescription</th>
+        <th>Doctor</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td>{{ record.diagnosis }}</td>
+        <td>{{ record.prescription|default:"—"|truncatechars:40 }}</td>
+        <td>{{ record.created_by.get_full_name|default:"—" }}</td>
+        <td>{{ record.created_at|date:"M j, Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">No medical records</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

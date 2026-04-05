@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%230ea5e9'>✦</text></svg>"/>
+  <title>{% block title %}PulseDesk{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#07090f;--surface:#0d1117;--card:#131920;--card2:#1a2230;
+      --border:#ffffff0c;--border2:#ffffff18;
+      --accent:#0ea5e9;--accent2:#06d6a0;--accent3:#f59e0b;
+      --text:#e8f0fe;--text2:#94a3b8;--muted:#4a5568;
+      --danger:#ef4444;--warning:#f59e0b;--success:#06d6a0;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+    .layout{display:flex;min-height:100vh}
+
+    /* SIDEBAR */
+    .sidebar{width:255px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:1.5rem;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;flex-shrink:0}
+    .s-brand{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
+    .s-logo{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;box-shadow:0 0 20px #0ea5e933}
+    .s-title{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .s-sub{font-size:.62rem;color:var(--muted);display:block}
+    .s-section{margin-bottom:1.75rem}
+    .s-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;margin-bottom:.6rem}
+    .nav-item{display:flex;align-items:center;gap:.6rem;padding:.55rem .75rem;border-radius:9px;color:var(--text2);font-size:.85rem;text-decoration:none;transition:all .15s;margin-bottom:.15rem}
+    .nav-item:hover{background:var(--card2);color:var(--text)}
+    .nav-item.active{background:#0ea5e918;color:var(--accent);border:1px solid #0ea5e922}
+    .nav-icon{font-size:1rem;width:20px;text-align:center}
+    .nav-badge{margin-left:auto;font-size:.68rem;background:var(--accent);color:#fff;padding:.1rem .4rem;border-radius:99px;font-weight:600}
+    .s-footer{margin-top:auto;padding-top:1rem;border-top:1px solid var(--border)}
+    .user-row{display:flex;align-items:center;gap:.6rem}
+    .u-avatar{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
+    .u-name{font-size:.85rem;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .u-role{font-size:.68rem;color:var(--muted)}
+    .btn-logout{background:none;border:1px solid var(--border2);color:var(--muted);padding:.28rem .55rem;border-radius:7px;cursor:pointer;font-size:.72rem;transition:all .15s;text-decoration:none;white-space:nowrap}
+    .btn-logout:hover{border-color:var(--danger);color:var(--danger)}
+
+    /* MAIN */
+    .main{flex:1;padding:2rem;min-width:0}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+    .topbar h1{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800}
+    .topbar p{color:var(--muted);font-size:.85rem}
+    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.2rem;background:linear-gradient(135deg,var(--accent),#38bdf8);border:none;border-radius:11px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;text-decoration:none;transition:all .15s;box-shadow:0 4px 20px #0ea5e933}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 30px #0ea5e955}
+    .btn-danger{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;background:#ef444412;border:1px solid #ef444422;border-radius:9px;color:var(--danger);font-size:.8rem;text-decoration:none;transition:all .15s}
+    .btn-danger:hover{background:#ef444422;border-color:var(--danger)}
+    .btn-secondary{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;background:none;border:1px solid var(--border2);border-radius:9px;color:var(--text2);font-size:.8rem;text-decoration:none;transition:all .15s}
+    .btn-secondary:hover{background:var(--card2);color:var(--text)}
+
+    /* CARDS */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:2rem}
+    .stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;position:relative;overflow:hidden}
+    .stat::after{content:'';position:absolute;top:-30px;right:-30px;width:80px;height:80px;border-radius:50%;opacity:.07}
+    .s1::after{background:var(--accent)}.s2::after{background:var(--accent2)}.s3::after{background:var(--accent3)}.s4::after{background:var(--danger)}.s5::after{background:#a78bfa}.s6::after{background:var(--success)}
+    .stat-num{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;line-height:1}
+    .stat-lbl{font-size:.72rem;color:var(--muted);margin-top:.35rem;text-transform:uppercase;letter-spacing:.04em}
+    .stat-ico{font-size:1.3rem;margin-bottom:.4rem}
+
+    /* TABLE */
+    .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    table{width:100%;border-collapse:collapse}
+    thead{background:var(--card2)}
+    th{padding:.75rem 1rem;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)}
+    td{padding:.85rem 1rem;font-size:.875rem;border-bottom:1px solid var(--border);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:var(--card2)}
+
+    /* BADGES */
+    .badge{display:inline-flex;padding:.2rem .55rem;border-radius:99px;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+    .b-scheduled{background:#0ea5e915;color:var(--accent)}
+    .b-confirmed{background:#06d6a015;color:var(--accent2)}
+    .b-completed{background:#22c55e15;color:#22c55e}
+    .b-cancelled{background:#ef444415;color:var(--danger)}
+    .b-no_show{background:#f59e0b15;color:var(--warning)}
+    .b-doctor{background:#a78bfa15;color:#a78bfa}
+    .b-nurse{background:#06d6a015;color:var(--accent2)}
+    .b-receptionist{background:#0ea5e915;color:var(--accent)}
+    .b-admin{background:#f59e0b15;color:var(--warning)}
+
+    /* FILTERS */
+    .filters{display:flex;align-items:center;gap:.6rem;margin-bottom:1.5rem;flex-wrap:wrap}
+    .search{flex:1;min-width:180px;position:relative}
+    .search input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.6rem .9rem .6rem 2.2rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s}
+    .search input:focus{border-color:var(--accent)}
+    .search-ico{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--muted)}
+    select,input[type=date]{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:.6rem .85rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none}
+    select:focus,input[type=date]:focus{border-color:var(--accent)}
+    .btn-filter{padding:.6rem .95rem;background:var(--accent);border:none;border-radius:9px;color:#fff;font-size:.85rem;font-weight:500;cursor:pointer}
+    .btn-clear{padding:.6rem .95rem;background:none;border:1px solid var(--border2);border-radius:9px;color:var(--muted);font-size:.85rem;text-decoration:none}
+    .btn-clear:hover{border-color:var(--danger);color:var(--danger)}
+
+    /* FORM */
+    .form-card{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:2rem;max-width:600px}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .fg{margin-bottom:1rem}
+    .flbl{display:block;font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+    .fc{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:.75rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+    .fc:focus{border-color:var(--accent);box-shadow:0 0 0 3px #0ea5e918}
+    .fc::placeholder{color:var(--muted)}
+    textarea.fc{resize:vertical;min-height:80px}
+    .btn-save{padding:.85rem 1.5rem;background:linear-gradient(135deg,var(--accent),#38bdf8);border:none;border-radius:11px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;cursor:pointer;box-shadow:0 4px 20px #0ea5e933;transition:all .15s}
+    .btn-save:hover{transform:translateY(-1px)}
+    .btn-back{padding:.85rem 1.25rem;background:none;border:1px solid var(--border2);border-radius:11px;color:var(--muted);font-size:.88rem;text-decoration:none;display:inline-flex;align-items:center;transition:all .15s}
+    .btn-back:hover{color:var(--text);border-color:var(--border)}
+
+    /* FLASH */
+    .flash-wrap{position:fixed;top:1.25rem;right:1.25rem;z-index:2000;display:flex;flex-direction:column;gap:.4rem}
+    .flash{padding:.7rem 1.1rem;border-radius:11px;font-size:.85rem;animation:sIn .3s ease,fOut .4s ease 3.2s forwards;max-width:300px}
+    .flash-success{background:#06d6a018;border:1px solid #06d6a033;color:var(--success)}
+    .flash-error{background:#ef444418;border:1px solid #ef444433;color:var(--danger)}
+    @keyframes sIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+    @keyframes fOut{to{opacity:0;transform:translateX(16px)}}
+
+    @media(max-width:768px){
+      .sidebar{width:100%;min-height:auto;position:relative;height:auto}
+      .layout{flex-direction:column}
+      .frow{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+
+{% if messages %}
+<div class="flash-wrap">
+  {% for msg in messages %}
+  <div class="flash flash-{% if msg.tags == 'error' %}error{% else %}success{% endif %}">{{ msg }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="s-brand">
+      <div class="s-logo">✦</div>
+      <div>
+        <div class="s-title">PulseDesk</div>
+        <span class="s-sub">by Agha Wafa Abbas</span>
+      </div>
+    </div>
+
+    <div class="s-section">
+      <div class="s-label">Navigation</div>
+      <a href="{% url 'appointment_list' %}" class="nav-item {% block nav_appointments %}{% endblock %}">
+        <span class="nav-icon">📅</span> Appointments
+      </a>
+      <a href="{% url 'patient_list' %}" class="nav-item {% block nav_patients %}{% endblock %}">
+        <span class="nav-icon">👤</span> Patients
+      </a>
+      <a href="{% url 'staff_list' %}" class="nav-item {% block nav_staff %}{% endblock %}">
+        <span class="nav-icon">👨‍⚕️</span> Staff
+      </a>
+      <a href="/admin/" class="nav-item" target="_blank">
+        <span class="nav-icon">⚙</span> Admin Panel
+      </a>
+    </div>
+
+    <div class="s-footer">
+      <div class="user-row">
+        <div class="u-avatar">{{ request.user.username|first|upper }}</div>
+        <div>
+          <div class="u-name">{{ request.user.username }}</div>
+          <div class="u-role">Administrator</div>
+        </div>
+        <form method="POST" action="{% url 'logout' %}" style="display:inline">
+  {% csrf_token %}
+  <button type="submit" class="btn-logout">Out</button>
+</form>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<script>
+setTimeout(() => {
+  document.querySelectorAll('.flash').forEach(el => el.remove());
+}, 4000);
+</script>
+</body>
+</html>

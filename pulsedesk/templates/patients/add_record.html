@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Add Medical Record — PulseDesk{% endblock %}
+{% block nav_patients %}active{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Add Medical Record</h1>
+    <p>{{ patient.user.get_full_name }}</p>
+  </div>
+  <a href="{% url 'patient_detail' patient.id %}" class="btn-back">← Back</a>
+</div>
+
+<div class="form-card">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="fg">
+      <label class="flbl">Diagnosis *</label>
+      <input type="text" name="diagnosis" class="fc" placeholder="e.g. Type 2 Diabetes" required/>
+    </div>
+    <div class="fg">
+      <label class="flbl">Prescription</label>
+      <textarea name="prescription" class="fc" placeholder="Medications, dosage..."></textarea>
+    </div>
+    <div class="fg">
+      <label class="flbl">Notes</label>
+      <textarea name="notes" class="fc" placeholder="Additional clinical notes..."></textarea>
+    </div>
+    <div style="display:flex;gap:.75rem;margin-top:.5rem">
+      <a href="{% url 'patient_detail' patient.id %}" class="btn-back">Cancel</a>
+      <button type="submit" class="btn-save">Save Record →</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

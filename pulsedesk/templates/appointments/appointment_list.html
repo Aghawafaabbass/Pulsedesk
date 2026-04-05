@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}Appointments — PulseDesk{% endblock %}
+{% block nav_appointments %}active{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Appointments</h1>
+    <p>Manage all clinic appointments</p>
+  </div>
+  <a href="{% url 'add_appointment' %}" class="btn-primary">+ New Appointment</a>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat s1">
+    <div class="stat-ico">📅</div>
+    <div class="stat-num">{{ stats.total }}</div>
+    <div class="stat-lbl">Total</div>
+  </div>
+  <div class="stat s2">
+    <div class="stat-ico">🕐</div>
+    <div class="stat-num">{{ stats.scheduled }}</div>
+    <div class="stat-lbl">Scheduled</div>
+  </div>
+  <div class="stat s3">
+    <div class="stat-ico">✅</div>
+    <div class="stat-num">{{ stats.confirmed }}</div>
+    <div class="stat-lbl">Confirmed</div>
+  </div>
+  <div class="stat s4">
+    <div class="stat-ico">🏁</div>
+    <div class="stat-num">{{ stats.completed }}</div>
+    <div class="stat-lbl">Completed</div>
+  </div>
+  <div class="stat s5">
+    <div class="stat-ico">❌</div>
+    <div class="stat-num">{{ stats.cancelled }}</div>
+    <div class="stat-lbl">Cancelled</div>
+  </div>
+  <div class="stat s6">
+    <div class="stat-ico">📆</div>
+    <div class="stat-num">{{ stats.today }}</div>
+    <div class="stat-lbl">Today</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<form method="GET" class="filters">
+  <div class="search">
+    <span class="search-ico">🔍</span>
+    <input type="text" name="q" placeholder="Search patient or doctor..." value="{{ search }}"/>
+  </div>
+  <select name="status">
+    <option value="">All Status</option>
+    <option value="scheduled" {% if status_filter == 'scheduled' %}selected{% endif %}>Scheduled</option>
+    <option value="confirmed" {% if status_filter == 'confirmed' %}selected{% endif %}>Confirmed</option>
+    <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+    <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+    <option value="no_show" {% if status_filter == 'no_show' %}selected{% endif %}>No Show</option>
+  </select>
+  <input type="date" name="date" value="{{ date_filter }}"/>
+  <button type="submit" class="btn-filter">Filter</button>
+  {% if status_filter or date_filter or search %}
+  <a href="{% url 'appointment_list' %}" class="btn-clear">Clear</a>
+  {% endif %}
+</form>
+
+<!-- Table -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>Doctor</th>
+        <th>Date & Time</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for appt in appointments %}
+      <tr>
+        <td>{{ appt.patient.user.get_full_name }}</td>
+        <td>Dr. {{ appt.doctor.user.get_full_name }}</td>
+        <td>{{ appt.appointment_date|date:"M j, Y" }} · {{ appt.appointment_time|time:"g:i A" }}</td>
+        <td>{{ appt.get_appointment_type_display }}</td>
+        <td>
+          <span class="badge b-{{ appt.status }}">{{ appt.get_status_display }}</span>
+        </td>
+        <td>
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <form method="POST" action="{% url 'update_status' appt.id %}">
+              {% csrf_token %}
+              <select name="status" onchange="this.form.submit()" style="font-size:.75rem;padding:.3rem .5rem;border-radius:6px;background:var(--card2);border:1px solid var(--border2);color:var(--text)">
+                <option value="scheduled" {% if appt.status == 'scheduled' %}selected{% endif %}>Scheduled</option>
+                <option value="confirmed" {% if appt.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                <option value="completed" {% if appt.status == 'completed' %}selected{% endif %}>Completed</option>
+                <option value="cancelled" {% if appt.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                <option value="no_show" {% if appt.status == 'no_show' %}selected{% endif %}>No Show</option>
+              </select>
+            </form>
+            <a href="{% url 'delete_appointment' appt.id %}" class="btn-danger" onclick="return confirm('Delete?')">✕</a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center;color:var(--muted);padding:3rem">No appointments found</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
