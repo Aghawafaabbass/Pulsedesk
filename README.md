@@ -2,17 +2,17 @@
 ### Clinical Management System — Django
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-4.x-092E20?style=flat&logo=django&logoColor=white)
+![Django](https://img.shields.io/badge/Django-6.x-092E20?style=flat&logo=django&logoColor=white)
 ![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-Aghawafaabbass-181717?style=flat&logo=github&logoColor=white)
 
-> A production-grade, multi-app Django clinical management system — demonstrating real-world Full Stack Development patterns including role-based access, relational data modelling, multi-app architecture, and a professional responsive UI.
+> A production-grade, multi-app Django clinical management system — demonstrating real-world Full Stack Development patterns including role-based workflows, multi-app architecture, relational data modelling, and a professional responsive UI.
 
 ---
 
 ## 🚀 Live Demo
 
-👉 **Coming soon — deploying on Render.com**
+👉 **Coming Soon — Deployment in progress**
 
 ---
 
@@ -32,8 +32,6 @@
 
 ## 🏭 Real-World Use Cases
 
-This system reflects patterns used across multiple industries:
-
 - **Private Clinics** — Patient registration, appointment scheduling, medical records
 - **Family Health Teams** — Ontario/Canada multi-doctor practices
 - **Walk-in Clinics** — High-volume appointment management
@@ -47,40 +45,27 @@ This system reflects patterns used across multiple industries:
 
 ## 👥 User Roles
 
-| Role | Access | How They Use It |
-|------|--------|-----------------|
-| **System Admin** | Full access | Manages departments, staff accounts, system config |
-| **Receptionist** | Frontend dashboard | Registers patients, books appointments, updates status |
+| Role | Access | Workflow |
+|------|--------|----------|
+| **System Admin** | Full access | Manages departments, staff accounts |
+| **Receptionist** | Frontend dashboard | Registers patients, books appointments |
 | **Doctor** | Frontend dashboard | Views appointments, adds medical records |
-| **Patient** | Physical visit only | Registered by receptionist — no system login |
+| **Patient** | Physical visit only | Registered by receptionist |
 
 ---
 
 ## ✨ Features
 
-### Patient Management
 - 🔐 Controlled registration — admin/receptionist only
-- 📋 Full patient profiles — health card, blood type, emergency contact
+- 👤 Full patient profiles — health card, blood type, emergency contact
 - 📁 Medical records — diagnosis, prescription, clinical notes
-- 🔍 Search by name or health card number
-
-### Appointment System
-- 📅 Book appointments — patient + doctor + date + time
+- 📅 Appointment booking — patient + doctor + date + time
 - 🔄 5-stage lifecycle — Scheduled → Confirmed → Completed → Cancelled → No Show
-- 🔍 Filter by status, date, doctor or patient
+- 🔍 Search and filter — by status, date, doctor, patient
 - 📊 Real-time stats dashboard
-
-### Staff Management
-- 👨‍⚕️ Doctor, Nurse, Receptionist, Admin roles
-- 🏥 Department assignment
-- 📋 License number, specialization, availability
-- 📅 Schedule management
-
-### System
+- 👨‍⚕️ Staff management — roles, departments, specializations
 - ⚙️ Django Admin — fully configured
-- 🌑 Professional dark UI — all devices
-- 📱 Fully responsive
-- 🔐 Session-based authentication
+- 📱 Fully responsive dark UI
 
 ---
 
@@ -88,68 +73,64 @@ This system reflects patterns used across multiple industries:
 
 | Layer | Technology |
 |-------|-----------|
-| Backend | Python 3.10+ / Django 4.x |
+| Backend | Python 3.10+ / Django 6.x |
 | Database | SQLite (dev) / PostgreSQL (prod) |
 | Frontend | HTML5, CSS3, Vanilla JavaScript |
 | Fonts | Google Fonts — Syne + DM Sans |
 | Auth | Django contrib.auth |
 | Admin | Django Admin (customized) |
 | Version Control | Git + GitHub |
-| Deployment | Render.com (coming soon) |
+| Deployment | Coming soon |
 
 ---
 
 ## 🗄️ Figure 1 — Entity Relationship Diagram (ERD)
 
 ```
-┌──────────────┐      ┌──────────────────┐      ┌──────────────────┐
-│     USER     │      │   DEPARTMENT     │      │     SCHEDULE     │
-│──────────────│      │──────────────────│      │──────────────────│
-│ id (PK)      │      │ id (PK)          │      │ id (PK)          │
-│ username     │      │ name             │      │ staff_id (FK)    │
-│ first_name   │      │ description      │      │ day_of_week      │
-│ last_name    │      │ created_at       │      │ start_time       │
-│ email        │      └────────┬─────────┘      │ end_time         │
-│ password     │               │ 1              │ is_available     │
-│ is_staff     │               │ N              └──────────────────┘
-└──────┬───────┘      ┌────────▼─────────┐
-       │ 1            │      STAFF       │
-       ├──────────────│──────────────────│
-       │              │ id (PK)          │
-       │              │ user_id (FK)     │
-       │              │ role             │
-       │              │ department(FK)   │
-       │              │ specialization   │
-       │              │ license_number   │
-       │              │ phone            │
-       │              │ is_available     │
-       │              └────────┬─────────┘
-       │                       │ 1 (doctor)
-       │ 1                     │ N
-       │              ┌────────▼─────────┐
-       ├──────────────│   APPOINTMENT    │
-       │ N            │──────────────────│
-       │              │ id (PK)          │
-       │              │ patient_id (FK)  │
-       │              │ doctor_id (FK)   │
-       │              │ date             │
-       │              │ time             │
-       │              │ type             │
-       │              │ status           │
-       │              │ reason           │
-       │              └──────────────────┘
+┌──────────────┐     ┌──────────────────┐     ┌──────────────────┐
+│     USER     │     │   DEPARTMENT     │     │    SCHEDULE      │
+│──────────────│     │──────────────────│     │──────────────────│
+│ id (PK)      │     │ id (PK)          │     │ id (PK)          │
+│ username     │     │ name             │     │ staff_id (FK)    │
+│ first_name   │     │ description      │     │ day_of_week      │
+│ last_name    │     └────────┬─────────┘     │ start_time       │
+│ email        │              │ 1             │ end_time         │
+│ password     │              │ N             │ is_available     │
+└──────┬───────┘     ┌────────▼─────────┐     └──────────────────┘
+       │             │      STAFF       │
+       │  1          │──────────────────│
+       │             │ id (PK)          │
+       │             │ user_id (FK)     │
+       │             │ role             │
+       │             │ department (FK)  │
+       │             │ specialization   │
+       │             │ license_number   │
+       │             │ is_available     │
+       │             └────────┬─────────┘
+       │                      │ 1 (doctor)
+       │ 1                    │ N
+       │             ┌────────▼─────────┐
+       ├─────────────│   APPOINTMENT    │
+       │ N           │──────────────────│
+       │             │ id (PK)          │
+       │             │ patient_id (FK)  │
+       │             │ doctor_id (FK)   │
+       │             │ date + time      │
+       │             │ type + status    │
+       │             │ reason + notes   │
+       │             └──────────────────┘
        │ 1
-       │              ┌──────────────────┐      ┌──────────────────┐
-       └──────────────│    PATIENT       │      │  MEDICALRECORD   │
-                   N  │──────────────────│      │──────────────────│
-                      │ id (PK)          │◄─1───│ id (PK)          │
-                      │ user_id (FK)     │  N   │ patient_id (FK)  │
-                      │ health_card      │      │ diagnosis        │
-                      │ date_of_birth    │      │ prescription     │
-                      │ blood_type       │      │ notes            │
-                      │ phone            │      │ created_by (FK)  │
-                      │ emergency_contact│      │ created_at       │
-                      └──────────────────┘      └──────────────────┘
+       │             ┌──────────────────┐    ┌──────────────────┐
+       └─────────────│    PATIENT       │    │  MEDICALRECORD   │
+                  N  │──────────────────│    │──────────────────│
+                     │ id (PK)          │◄1──│ id (PK)          │
+                     │ user_id (FK)     │ N  │ patient_id (FK)  │
+                     │ health_card      │    │ diagnosis        │
+                     │ date_of_birth    │    │ prescription     │
+                     │ blood_type       │    │ notes            │
+                     │ phone            │    │ created_by (FK)  │
+                     │ emergency_contact│    │ created_at       │
+                     └──────────────────┘    └──────────────────┘
 ```
 
 ---
@@ -160,19 +141,17 @@ This system reflects patterns used across multiple industries:
 Browser        URL Router     Middleware      View           Database
    │               │              │             │               │
    │─POST /login───►              │             │               │
-   │               │─match───────►│             │               │
-   │               │              │─auth────────►               │
-   │◄──redirect /appointments/────│             │               │
-   │               │              │             │               │
-   │─GET /appointments/────────────────────────►│               │
-   │               │              │             │─Appt.all()────►
-   │               │              │             │◄──queryset────│
-   │◄──200 HTML Response──────────────────────── │               │
-   │               │              │             │               │
-   │─POST /appointments/add/───────────────────►│               │
-   │               │              │             │─Appt.create()─►
-   │               │              │             │◄──saved───────│
-   │◄──302 redirect────────────────────────────│               │
+   │               │─match───────►│─auth────────►               │
+   │◄──redirect /appointments/────────────────────              │
+   │                                            │               │
+   │─GET /appointments/─────────────────────────►               │
+   │                                            │─Appt.filter()─►
+   │                                            │◄──queryset────│
+   │◄──200 HTML─────────────────────────────────│               │
+   │                                            │               │
+   │─POST /appointments/add/────────────────────►               │
+   │                                            │─Appt.create()─►
+   │◄──302 redirect─────────────────────────────│               │
 ```
 
 ---
@@ -180,36 +159,19 @@ Browser        URL Router     Middleware      View           Database
 ## 🏗️ Figure 3 — System Architecture
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                      PRODUCTION                           │
-│                                                           │
-│   Internet                                                │
-│      │                                                    │
-│      ▼                                                    │
-│   ┌──────────────┐                                        │
-│   │   Render.com │  ← Cloud platform, HTTPS auto          │
-│   │   WSGI Server│                                        │
-│   └──────┬───────┘                                        │
-│          │                                                │
-│          ▼                                                │
-│   ┌────────────────────────────────────┐                  │
-│   │         DJANGO APPLICATION         │                  │
-│   │  patients · appointments · staff   │                  │
-│   │  Views · Models · Templates · Auth │                  │
-│   └──────────────┬─────────────────────┘                  │
-│                  │                                        │
-│                  ▼                                        │
-│   ┌──────────────────────────────────┐                    │
-│   │           SQLite DB              │                    │
-│   │  Users · Patients · Staff        │                    │
-│   │  Appointments · MedicalRecords   │                    │
-│   └──────────────────────────────────┘                    │
-└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│                  PRODUCTION                       │
+│                                                   │
+│  Browser ──► Cloud Server ──► Django ──► SQLite   │
+│              (WSGI)          patients             │
+│                              appointments         │
+│                              staff                │
+└──────────────────────────────────────────────────┘
 
-┌──────────────────────────────────────────────────────────┐
-│                      DEVELOPMENT                          │
-│   Browser ──► Django runserver (8000) ──► SQLite          │
-└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│                  DEVELOPMENT                      │
+│  Browser ──► runserver (8000) ──► SQLite          │
+└──────────────────────────────────────────────────┘
 ```
 
 ---
@@ -217,20 +179,16 @@ Browser        URL Router     Middleware      View           Database
 ## 📊 Figure 4 — Appointment State Machine
 
 ```
-                    APPOINTMENT LIFECYCLE
-   
-   ┌────────────┐  Confirm   ┌─────────────┐  Complete  ┌───────────┐
-   │ SCHEDULED  │───────────►│  CONFIRMED  │───────────►│ COMPLETED │
-   └─────┬──────┘            └─────────────┘            └───────────┘
-         │
-         │ Cancel                          No Show
-         ▼                                    ▼
-   ┌────────────┐                      ┌───────────┐
-   │ CANCELLED  │                      │  NO SHOW  │
-   └────────────┘                      └───────────┘
+┌────────────┐  Confirm  ┌─────────────┐  Complete  ┌───────────┐
+│ SCHEDULED  │──────────►│  CONFIRMED  │───────────►│ COMPLETED │
+└─────┬──────┘           └─────────────┘            └───────────┘
+      │ Cancel                               No Show
+      ▼                                         ▼
+┌────────────┐                          ┌──────────────┐
+│ CANCELLED  │                          │   NO SHOW    │
+└────────────┘                          └──────────────┘
 
-   APPOINTMENT TYPES:
-   General Checkup · Follow Up · Emergency · Specialist · Lab Test
+Types: General Checkup · Follow Up · Emergency · Specialist · Lab Test
 ```
 
 ---
@@ -238,20 +196,17 @@ Browser        URL Router     Middleware      View           Database
 ## ⚡ Figure 5 — URL & API Flow
 
 ```
-FRONTEND (Browser)              BACKEND (Django Views)
-
-GET  /                     ──► LoginView (Django built-in)
-GET  /appointments/        ──► appointment_list() → stats + filter
-POST /appointments/add/    ──► add_appointment()  → Appointment.create()
+GET  /                      ──► LoginView
+GET  /appointments/         ──► appointment_list() → stats + filter
+POST /appointments/add/     ──► add_appointment()  → Appointment.create()
 POST /appointments/<id>/status/ ──► update_status() → appt.save()
-GET  /patients/            ──► patient_list()    → Patient.all()
-GET  /patients/<id>/       ──► patient_detail()  → records + appointments
-POST /patients/add/        ──► add_patient()     → User.create() + Patient.create()
-POST /patients/<id>/record/──► add_medical_record() → MedicalRecord.create()
-GET  /staff/               ──► staff_list()      → Staff.all()
-POST /staff/add/           ──► add_staff()       → User.create() + Staff.create()
-GET  /admin/               ──► Django Admin (superuser only)
-GET  /logout/              ──► LogoutView → redirect to /
+GET  /patients/             ──► patient_list()
+GET  /patients/<id>/        ──► patient_detail() → records + appointments
+POST /patients/add/         ──► add_patient() → User + Patient create
+POST /patients/<id>/record/ ──► add_medical_record() → MedicalRecord.create()
+GET  /staff/                ──► staff_list()
+POST /staff/add/            ──► add_staff() → User + Staff create
+GET  /admin/                ──► Django Admin (superuser only)
 ```
 
 ---
@@ -259,25 +214,13 @@ GET  /logout/              ──► LogoutView → redirect to /
 ## 📦 Quick Setup
 
 ```bash
-# 1. Clone
 git clone https://github.com/Aghawafaabbass/Pulsedesk.git
 cd Pulsedesk
-
-# 2. Virtual environment
 python -m venv venv
-venv\Scripts\activate        # Windows
-source venv/bin/activate     # Mac/Linux
-
-# 3. Install
+venv\Scripts\activate
 pip install -r requirements.txt
-
-# 4. Database
 python manage.py migrate
-
-# 5. Admin user
 python manage.py createsuperuser
-
-# 6. Run
 python manage.py runserver
 ```
 
@@ -297,27 +240,25 @@ Pulsedesk/
 ├── pulsedesk/
 │   ├── settings.py
 │   ├── urls.py
-│   ├── wsgi.py
-│   └── asgi.py
+│   └── wsgi.py
 ├── patients/
-│   ├── models.py       ← Patient, MedicalRecord
+│   ├── models.py
 │   ├── views.py
 │   ├── urls.py
 │   └── admin.py
 ├── appointments/
-│   ├── models.py       ← Appointment
+│   ├── models.py
 │   ├── views.py
 │   ├── urls.py
 │   └── admin.py
 ├── staff/
-│   ├── models.py       ← Staff, Department, Schedule
+│   ├── models.py
 │   ├── views.py
 │   ├── urls.py
 │   └── admin.py
 └── templates/
     ├── base.html
-    ├── registration/
-    │   └── login.html
+    ├── registration/login.html
     ├── patients/
     ├── appointments/
     └── staff/
@@ -327,13 +268,14 @@ Pulsedesk/
 
 ## 🔮 Future Enhancements
 
-- [ ] Role-based permissions (Doctor vs Receptionist vs Admin)
+- [ ] Role-based permissions
 - [ ] Patient login portal
-- [ ] Email notifications for appointments
+- [ ] Email notifications
 - [ ] Invoice & billing system
 - [ ] REST API with Django REST Framework
 - [ ] PostgreSQL for production
 - [ ] Docker containerization
+- [ ] Cloud deployment
 
 ---
 
