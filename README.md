@@ -16,6 +16,28 @@
 
 ---
 
+## 📸 Screenshots
+
+### Login Page
+![Login](screenshots/01_login.png)
+
+### Appointments Dashboard
+![Appointments](screenshots/02_appointments.png)
+
+### Patients List
+![Patients](screenshots/03_patients.png)
+
+### Patient Detail
+![Patient Detail](screenshots/04_patient_detail.png)
+
+### Staff Management
+![Staff](screenshots/05_staff.png)
+
+### Admin Panel
+![Admin](screenshots/06_admin.png)
+
+---
+
 ## 👨‍💻 Developer
 
 **Agha Wafa Abbas**
@@ -235,6 +257,13 @@ Pulsedesk/
 ├── manage.py
 ├── requirements.txt
 ├── README.md
+├── screenshots/
+│   ├── 01_login.png
+│   ├── 02_appointments.png
+│   ├── 03_patients.png
+│   ├── 04_patient_detail.png
+│   ├── 05_staff.png
+│   └── 06_admin.png
 ├── docs/
 │   └── PulseDesk_Complete_Guide.docx
 ├── pulsedesk/
@@ -242,26 +271,9 @@ Pulsedesk/
 │   ├── urls.py
 │   └── wsgi.py
 ├── patients/
-│   ├── models.py
-│   ├── views.py
-│   ├── urls.py
-│   └── admin.py
 ├── appointments/
-│   ├── models.py
-│   ├── views.py
-│   ├── urls.py
-│   └── admin.py
 ├── staff/
-│   ├── models.py
-│   ├── views.py
-│   ├── urls.py
-│   └── admin.py
 └── templates/
-    ├── base.html
-    ├── registration/login.html
-    ├── patients/
-    ├── appointments/
-    └── staff/
 ```
 
 ---
